@@ -3,8 +3,7 @@
 
 SortVerse is a feature-rich, high-performance, and visually stunning interactive web application designed to visualize and analyze popular Data Structures and Algorithms (DSA) sorting routines. Built from scratch with pure web standards (HTML5, CSS3, and ES6 JavaScript), it requires **zero external libraries or framework overhead**.
 
-👉 **[Live Interactive Demo](https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/)**
-
+👉 **[Live Interactive Demo]
 ---
 
 ## 🌟 Visualizer Modes
@@ -80,30 +79,3 @@ sorting-visualizer/
 
 ---
 
-## 🚀 Getting Started & Deployment
-
-### 1. View Locally
-To run the project locally on your machine, simply download/clone the folder and open `index.html` in any web browser. 
-
-If you prefer to run a local dev server:
-```bash
-# Using Python
-python -m http.server 8000
-
-# Using Node.js
-npx http-server -p 8000
-```
-
-### 2. Deploy to GitHub Pages (Get a Live Demo Link)
-You can host this project on GitHub for free:
-1. Push this project to your GitHub repository.
-2. On GitHub, go to your repository's **Settings** tab.
-3. In the left sidebar, click on **Pages**.
-4. Under **Build and deployment**, set the source to **Deploy from a branch**.
-5. Select the **main** branch and `/ (root)` folder, then click **Save**.
-6. GitHub will generate your live link (e.g. `https://username.github.io/repo-name/`) in a few minutes!
-
----
-
-## 📜 License
-This project is licensed under the MIT License - feel free to use, modify, and distribute this codebase.
