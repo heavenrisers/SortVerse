@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SortVerse | Premium DSA Sorting Visualizer & Race Arena</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Dark background decorative elements for high-end glowing look -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="app-container">
+    <!-- SIDEBAR FOR CONTROL & SETTINGS -->
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="logo-icon" viewBox="0 0 24 24" width="30" height="30">
+          <path fill="url(#logo-grad)" d="M3 18h3v-5H3v5zm5 0h3V6H8v12zm5 0h3v-9h-3v9zm5 0h3v-14h-3v14z"/>
+          <defs>
+            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#06B6D4" />
+              <stop offset="100%" stop-color="#8B5CF6" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <h1>Sort<span>Verse</span></h1>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-btn active" id="nav-single" data-view="single">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M9 17V9m6 8V13" />
+          </svg>
+          Single Mode
+        </button>
+        <button class="nav-btn" id="nav-compare" data-view="compare">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 17v-4m6 4V9m-3 8v-6" />
+          </svg>
+          Compare Mode
+        </button>
+        <button class="nav-btn" id="nav-arena" data-view="arena">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+          Race Arena
+        </button>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- GLOBAL DATA CONFIGURATION -->
+      <div class="settings-section">
+        <h3>Dataset Configuration</h3>
+        
+        <div class="form-group">
+          <label for="array-size">Array Size: <span id="size-val">50</span></label>
+          <input type="range" id="array-size" min="10" max="150" value="50">
+        </div>
+
+        <div class="form-group">
+          <label for="array-type">Dataset Type</label>
+          <select id="array-type">
+            <option value="random">Randomized</option>
+            <option value="reversed">Reversed (Worst Case)</option>
+            <option value="nearly-sorted">Nearly Sorted</option>
+            <option value="few-unique">Few Unique Keys</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-generate">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          Shuffle & Generate
+        </button>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- SOUND EFFECTS -->
+      <div class="settings-section">
+        <h3>Auditory Feedback</h3>
+        <div class="audio-controls">
+          <label class="toggle-switch">
+            <input type="checkbox" id="audio-toggle" checked>
+            <span class="slider"></span>
+            <span class="toggle-label">Synth Sounds</span>
+          </label>
+          <div class="form-group volume-group">
+            <label for="volume-control">Volume</label>
+            <input type="range" id="volume-control" min="0" max="100" value="30">
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="main-content">
+      <!-- TOP CONTROL BAR -->
+      <header class="top-controls">
+        <div class="control-group">
+          <button class="control-btn" id="btn-play" title="Play">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <button class="control-btn" id="btn-pause" title="Pause" style="display: none;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+          <button class="control-btn" id="btn-step" title="Step Forward">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 4l10 8-10 8V4zM19 5v14"/>
+            </svg>
+          </button>
+          <button class="control-btn" id="btn-reset" title="Reset Current Visualizer">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="control-group-divider"></div>
+
+        <div class="control-group speed-group">
+          <label for="animation-speed">Delay: <span id="speed-val">50 ms</span></label>
+          <input type="range" id="animation-speed" min="1" max="1000" value="50">
+        </div>
+      </header>
+
+      <!-- VIEW PANELS -->
+      <div class="view-viewport">
+
+        <!-- VIEW 1: SINGLE MODE -->
+        <section class="view-panel active" id="view-single">
+          <div class="panel-header">
+            <div>
+              <h2>Single Algorithm Visualizer</h2>
+              <p>Observe deep sorting logic, execution statistics, and code lines in real-time.</p>
+            </div>
+            <div class="select-wrapper">
+              <select id="single-algo-select" class="styled-select">
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="shell">Shell Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort (Lomuto)</option>
+                <option value="heap">Heap Sort</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="layout-grid-single">
+            <!-- Canvas Container -->
+            <div class="card visualizer-card">
+              <div class="visualizer-header">
+                <span class="status-indicator" id="single-status">Ready</span>
+              </div>
+              <div class="bars-container" id="single-bars-container">
+                <!-- Bars dynamically inserted by JS -->
+              </div>
+            </div>
+
+            <!-- Code Execution Panel -->
+            <div class="card code-card">
+              <div class="card-header">
+                <h3>Implementation Code</h3>
+                <span class="badge" id="algo-type-badge">O(N²)</span>
+              </div>
+              <div class="code-container">
+                <pre><code id="code-display" class="language-js">// Code loads here</code></pre>
+              </div>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="card stats-card-grid">
+              <div class="metric-card">
+                <span class="metric-title">Comparisons</span>
+                <span class="metric-value" id="stat-comparisons">0</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">Array Accesses</span>
+                <span class="metric-value" id="stat-accesses">0</span>
+              </div>
+              <div class="metric-card text-highlight-cyan">
+                <span class="metric-title">Time Elapsed</span>
+                <span class="metric-value" id="stat-time">0.00 ms</span>
+              </div>
+              <div class="metric-card text-highlight-pink">
+                <span class="metric-title">Aux Space</span>
+                <span class="metric-value" id="stat-space">O(1)</span>
+              </div>
+            </div>
+
+            <!-- Complexity Info Box -->
+            <div class="card complexity-card">
+              <div class="card-header">
+                <h3>Theoretical Complexities</h3>
+              </div>
+              <div class="complexity-table">
+                <div class="comp-row">
+                  <span>Best Time Complexity:</span>
+                  <strong class="text-highlight-green" id="comp-best">O(N)</strong>
+                </div>
+                <div class="comp-row">
+                  <span>Average Time Complexity:</span>
+                  <strong class="text-highlight-cyan" id="comp-avg">O(N²)</strong>
+                </div>
+                <div class="comp-row">
+                  <span>Worst Time Complexity:</span>
+                  <strong class="text-highlight-pink" id="comp-worst">O(N²)</strong>
+                </div>
+                <div class="comp-row">
+                  <span>Stability:</span>
+                  <strong id="comp-stability">Stable</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: COMPARE MODE -->
+        <section class="view-panel" id="view-compare">
+          <div class="panel-header">
+            <div>
+              <h2>Algorithm Comparison Engine</h2>
+              <p>Compare two algorithms running simultaneously on identical datasets.</p>
+            </div>
+          </div>
+
+          <div class="layout-grid-compare">
+            <!-- Left Competitor Panel -->
+            <div class="card compare-canvas-card">
+              <div class="compare-title-bar">
+                <select id="compare-algo-a" class="styled-select select-compact">
+                  <option value="bubble" selected>Bubble Sort</option>
+                  <option value="selection">Selection Sort</option>
+                  <option value="insertion">Insertion Sort</option>
+                  <option value="shell">Shell Sort</option>
+                  <option value="merge">Merge Sort</option>
+                  <option value="quick">Quick Sort</option>
+                  <option value="heap">Heap Sort</option>
+                </select>
+                <div class="mini-metrics">
+                  <span>Comp: <strong id="compare-a-comp">0</strong></span>
+                  <span>Acc: <strong id="compare-a-acc">0</strong></span>
+                </div>
+              </div>
+              <div class="bars-container compare-container" id="compare-bars-a">
+                <!-- Bars dynamically inserted by JS -->
+              </div>
+              <div class="compare-footer-info">
+                <span id="compare-a-status" class="status-indicator">Ready</span>
+                <span id="compare-a-time" class="text-highlight-cyan">0.00 ms</span>
+              </div>
+            </div>
+
+            <!-- Right Competitor Panel -->
+            <div class="card compare-canvas-card">
+              <div class="compare-title-bar">
+                <select id="compare-algo-b" class="styled-select select-compact">
+                  <option value="bubble">Bubble Sort</option>
+                  <option value="selection">Selection Sort</option>
+                  <option value="insertion">Insertion Sort</option>
+                  <option value="shell">Shell Sort</option>
+                  <option value="merge">Merge Sort</option>
+                  <option value="quick" selected>Quick Sort</option>
+                  <option value="heap">Heap Sort</option>
+                </select>
+                <div class="mini-metrics">
+                  <span>Comp: <strong id="compare-b-comp">0</strong></span>
+                  <span>Acc: <strong id="compare-b-acc">0</strong></span>
+                </div>
+              </div>
+              <div class="bars-container compare-container" id="compare-bars-b">
+                <!-- Bars dynamically inserted by JS -->
+              </div>
+              <div class="compare-footer-info">
+                <span id="compare-b-status" class="status-indicator">Ready</span>
+                <span id="compare-b-time" class="text-highlight-cyan">0.00 ms</span>
+              </div>
+            </div>
+
+            <!-- Metrics Comparison Chart Card -->
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3>Live Performance Metrics (Visualized)</h3>
+                <p class="subtitle">Comparing total operations (lower is better)</p>
+              </div>
+              <div class="chart-container">
+                <!-- Custom SVG comparison chart -->
+                <svg id="comparison-svg-chart" viewBox="0 0 500 250">
+                  <!-- Chart is drawn dynamically via JS -->
+                </svg>
+              </div>
+            </div>
+
+            <!-- Space Complexity Compare Card -->
+            <div class="card info-comparison-card">
+              <div class="card-header">
+                <h3>Memory & Auxiliary Footprint</h3>
+              </div>
+              <div class="footprint-display">
+                <div class="footprint-block" id="footprint-block-a">
+                  <span class="footprint-name" id="footprint-name-a">Bubble Sort</span>
+                  <div class="footprint-scale-container">
+                    <div class="footprint-scale" id="scale-bar-a" style="width: 10%;"></div>
+                  </div>
+                  <span class="footprint-val" id="footprint-val-a">Aux Space: O(1)</span>
+                </div>
+                <div class="footprint-divider">VS</div>
+                <div class="footprint-block" id="footprint-block-b">
+                  <span class="footprint-name" id="footprint-name-b">Quick Sort</span>
+                  <div class="footprint-scale-container">
+                    <div class="footprint-scale" id="scale-bar-b" style="width: 50%;"></div>
+                  </div>
+                  <span class="footprint-val" id="footprint-val-b">Aux Space: O(log N)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: RACE ARENA -->
+        <section class="view-panel" id="view-arena">
+          <div class="panel-header">
+            <div>
+              <h2>Algorithm Race Arena</h2>
+              <p>Choose your contestants, trigger the starter pistol, and watch the race to full order!</p>
+            </div>
+            <button class="btn btn-accent btn-pulse" id="btn-race-trigger">
+              🏁 Start Race!
+            </button>
+          </div>
+
+          <div class="layout-grid-arena">
+            <!-- Left Side: Race Lanes -->
+            <div class="card race-tracks-card">
+              <div class="race-lanes-container" id="race-lanes-container">
+                <!-- Lanes generated dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Right Side: Leaderboard & Stats -->
+            <div class="card leaderboard-card">
+              <div class="card-header">
+                <h3>Race Standings</h3>
+              </div>
+              <div class="leaderboard-list" id="arena-leaderboard">
+                <div class="leaderboard-empty">Waiting for race to start...</div>
+              </div>
+              <div class="arena-podium" id="arena-podium" style="display: none;">
+                <div class="podium-col second">
+                  <div class="podium-rank">2nd</div>
+                  <div class="podium-name" id="pod-2">Selection</div>
+                </div>
+                <div class="podium-col first">
+                  <div class="podium-crown">👑</div>
+                  <div class="podium-rank">1st</div>
+                  <div class="podium-name" id="pod-1">Quick Sort</div>
+                </div>
+                <div class="podium-col third">
+                  <div class="podium-rank">3rd</div>
+                  <div class="podium-name" id="pod-3">Bubble</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/algorithms.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/comparator.js"></script>
+  <script src="js/arena.js"></script>
+</body>
+</html>
